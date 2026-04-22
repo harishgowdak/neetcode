@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DSA Cheatsheet — When to Use What</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d5;
+    --accent: #c4452d;
+    --accent-2: #2d5a3f;
+    --muted: #6b6355;
+    --rule: #1a1a1a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { background: var(--paper); }
+
+  body {
+    font-family: 'Fraunces', Georgia, serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.45;
+    padding: 48px 32px;
+    max-width: 1280px;
+    margin: 0 auto;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(196,69,45,0.04) 0%, transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(45,90,63,0.04) 0%, transparent 40%);
+  }
+
+  /* Masthead */
+  .masthead {
+    border-top: 4px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 20px 0 16px;
+    margin-bottom: 8px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: end;
+    gap: 24px;
+  }
+
+  .masthead .edition {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 6px;
+  }
+
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    font-variation-settings: "opsz" 144;
+    text-align: center;
+  }
+
+  .masthead h1 em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+  }
+
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: right;
+    padding-bottom: 6px;
+  }
+
+  .subtitle {
+    text-align: center;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--muted);
+    padding: 14px 0 28px;
+    border-bottom: 1px solid var(--ink);
+    margin-bottom: 36px;
+  }
+
+  /* Section headers */
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin: 40px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .section-head .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 4px 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .section-head h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 34px;
+    letter-spacing: -0.02em;
+    font-variation-settings: "opsz" 144;
+  }
+
+  .section-head .tag {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* Grid of cards */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--ink);
+    border-left: 1px solid var(--ink);
+  }
+
+  .card {
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 18px 20px;
+    background: var(--paper);
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .card:hover {
+    background: var(--paper-2);
+  }
+
+  .card .name {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+    line-height: 1.1;
+  }
+
+  .card .big {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .card .use {
+    font-size: 14.5px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .card .ops {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 6px 10px;
+    display: inline-block;
+    letter-spacing: 0.03em;
+  }
+
+  .card .ops .dim { opacity: 0.55; }
+
+  /* Patterns / signals section */
+  .signals {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0;
+    margin-top: 24px;
+    border-top: 1px solid var(--ink);
+    border-left: 1px solid var(--ink);
+  }
+
+  .signal {
+    padding: 16px 18px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper);
+  }
+
+  .signal .trigger {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--accent-2);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .signal .arrow {
+    color: var(--accent);
+    font-weight: 700;
+    margin: 0 4px;
+  }
+
+  .signal .answer {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.3;
+  }
+
+  /* Complexity table */
+  .complexity-wrap {
+    margin-top: 24px;
+    overflow-x: auto;
+  }
+
+  table.complexity {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+  }
+
+  table.complexity th,
+  table.complexity td {
+    border: 1px solid var(--ink);
+    padding: 8px 12px;
+    text-align: left;
+  }
+
+  table.complexity th {
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+
+  table.complexity td:first-child {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  table.complexity tr:nth-child(even) td {
+    background: var(--paper-2);
+  }
+
+  .good { color: var(--accent-2); font-weight: 700; }
+  .bad { color: var(--accent); font-weight: 700; }
+
+  /* Footer */
+  footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 4px solid var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  footer .logo {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink);
+  }
+
+  /* Drop cap for intro */
+  .intro {
+    font-size: 16px;
+    line-height: 1.55;
+    column-count: 2;
+    column-gap: 32px;
+    margin-bottom: 32px;
+    padding: 0 8px;
+  }
+
+  .intro::first-letter {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 72px;
+    float: left;
+    line-height: 0.85;
+    margin: 4px 8px 0 0;
+    color: var(--accent);
+  }
+
+  @media (max-width: 700px) {
+    body { padding: 24px 16px; }
+    .masthead { grid-template-columns: 1fr; text-align: center; }
+    .masthead .meta, .masthead .edition { text-align: center; }
+    .intro { column-count: 1; }
+    .section-head h2 { font-size: 26px; }
+  }
+
+  @media print {
+    body { padding: 20px; background: white; }
+    .card, .signal { break-inside: avoid; }
+    .section-head { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="edition">Vol. 01 · Reference</div>
+  <h1>The <em>DSA</em> Cheatsheet</h1>
+  <div class="meta">When · to · Use · What</div>
+</header>
+
+<p class="subtitle">A practical field guide to picking the right tool — organized by the shape of the problem, not the shape of the answer.</p>
+
+<p class="intro">
+Choosing a data structure is really choosing what you want to be fast. Every structure trades something away — arrays give up cheap insertion to win on random access; hash maps give up ordering to win on lookup; trees give up constant-time operations to keep things sorted. The trick is recognizing which tradeoff the problem actually rewards. Most of the time the clue is in the verbs: <em>find</em>, <em>count</em>, <em>order</em>, <em>connect</em>, <em>shortest</em>, <em>all possible</em>. Read the verbs, pick the structure, then worry about the algorithm.
+</p>
+
+<!-- ===== SECTION 1: DATA STRUCTURES ===== -->
+
+<div class="section-head">
+  <span class="num">01</span>
+  <h2>Data Structures</h2>
+  <span class="tag">pick by access pattern</span>
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="name">Array / List</div>
+    <span class="big">Default choice</span>
+    <p class="use">Fast index access, predictable size. Start here unless you have a reason not to.</p>
+    <div class="ops">access <span class="dim">O(1)</span> · insert-mid <span class="dim">O(n)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Hash Map</div>
+    <span class="big">"Have I seen this?"</span>
+    <p class="use">Counting, deduplication, memoization, lookup-by-key. No ordering guarantees.</p>
+    <div class="ops">get/set <span class="dim">O(1)</span> avg · worst <span class="dim">O(n)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Tree Map</div>
+    <span class="big">Ordered lookup</span>
+    <p class="use">When you need sorted keys, range queries, or "smallest key ≥ X".</p>
+    <div class="ops">all ops <span class="dim">O(log n)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Stack</div>
+    <span class="big">LIFO · last-in-first-out</span>
+    <p class="use">Undo, bracket matching, DFS, expression parsing, "next greater element".</p>
+    <div class="ops">push/pop <span class="dim">O(1)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Queue / Deque</div>
+    <span class="big">FIFO · first-in-first-out</span>
+    <p class="use">BFS, scheduling, sliding windows (deque), producer-consumer pipelines.</p>
+    <div class="ops">enq/deq <span class="dim">O(1)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Heap</div>
+    <span class="big">Top-K · priority</span>
+    <p class="use">Always process the highest-priority item next. Dijkstra, median, merge-k-sorted.</p>
+    <div class="ops">push/pop <span class="dim">O(log n)</span> · peek <span class="dim">O(1)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Trie</div>
+    <span class="big">Prefix problems</span>
+    <p class="use">Autocomplete, spell-check, IP routing, word games. Overkill without prefix needs.</p>
+    <div class="ops">lookup <span class="dim">O(k)</span> where k = key length</div>
+  </div>
+
+  <div class="card">
+    <div class="name">Union-Find</div>
+    <span class="big">Grouping · connectivity</span>
+    <p class="use">"Same component?" Kruskal's MST, cycle detection in undirected graphs.</p>
+    <div class="ops">union/find <span class="dim">~O(α(n)) ≈ O(1)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Graph</div>
+    <span class="big">Relationships · networks</span>
+    <p class="use">Adjacency list for sparse (most real cases), matrix for dense or O(1) edge checks.</p>
+    <div class="ops">list: space <span class="dim">O(V+E)</span> · matrix <span class="dim">O(V²)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Linked List</div>
+    <span class="big">Rarely the answer</span>
+    <p class="use">Only when O(1) insert/delete at known nodes matters and random access doesn't. Poor cache behaviour.</p>
+    <div class="ops">insert-at-node <span class="dim">O(1)</span> · access <span class="dim">O(n)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Segment / Fenwick Tree</div>
+    <span class="big">Range query + update</span>
+    <p class="use">Sum/min/max over [l, r] while values change. Competitive programming staple.</p>
+    <div class="ops">query/update <span class="dim">O(log n)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Hash Set</div>
+    <span class="big">Membership only</span>
+    <p class="use">"Is X in this collection?" Cheaper than a map when you don't need values.</p>
+    <div class="ops">contains <span class="dim">O(1)</span> avg</div>
+  </div>
+
+</div>
+
+<!-- ===== SECTION 2: ALGORITHMS ===== -->
+
+<div class="section-head">
+  <span class="num">02</span>
+  <h2>Algorithms</h2>
+  <span class="tag">pick by problem shape</span>
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="name">Two Pointers</div>
+    <span class="big">Sorted arrays · pairs</span>
+    <p class="use">Find pairs/triplets with a target, remove duplicates in place, palindrome checks.</p>
+    <div class="ops">typically <span class="dim">O(n)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Sliding Window</div>
+    <span class="big">Contiguous sub-range</span>
+    <p class="use">"Longest substring with…", "max sum of window k", "min window containing…".</p>
+    <div class="ops"><span class="dim">O(n)</span> with amortized moves</div>
+  </div>
+
+  <div class="card">
+    <div class="name">Binary Search</div>
+    <span class="big">Sorted · monotonic</span>
+    <p class="use">Sorted arrays, or "search the answer space" — smallest value satisfying a condition.</p>
+    <div class="ops"><span class="dim">O(log n)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">DFS</div>
+    <span class="big">Go deep · explore</span>
+    <p class="use">Tree traversal, backtracking, topological sort, cycle detection, connected components.</p>
+    <div class="ops"><span class="dim">O(V + E)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">BFS</div>
+    <span class="big">Shortest · unweighted</span>
+    <p class="use">Level-order, "minimum steps to reach", shortest path in unweighted graphs.</p>
+    <div class="ops"><span class="dim">O(V + E)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Dijkstra</div>
+    <span class="big">Shortest · weighted</span>
+    <p class="use">Shortest path with non-negative edge weights. Uses a min-heap.</p>
+    <div class="ops"><span class="dim">O((V+E) log V)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Dynamic Programming</div>
+    <span class="big">Overlapping subproblems</span>
+    <p class="use">"Count the ways", "min/max cost to", "can you reach". Define state, then transition.</p>
+    <div class="ops">varies · often <span class="dim">O(n²)</span> or <span class="dim">O(n·k)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Greedy</div>
+    <span class="big">Local → global</span>
+    <p class="use">When a local optimal choice provably wins. Prove it works — don't hope. Interval scheduling, Huffman.</p>
+    <div class="ops">often <span class="dim">O(n log n)</span> after sorting</div>
+  </div>
+
+  <div class="card">
+    <div class="name">Backtracking</div>
+    <span class="big">All possibilities</span>
+    <p class="use">Generate permutations, combinations, N-queens, Sudoku. Small input sizes only.</p>
+    <div class="ops">exponential · prune aggressively</div>
+  </div>
+
+  <div class="card">
+    <div class="name">Divide &amp; Conquer</div>
+    <span class="big">Split · solve · merge</span>
+    <p class="use">Merge sort, quick sort, closest pair of points. Independent subproblems.</p>
+    <div class="ops">often <span class="dim">O(n log n)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Bellman–Ford</div>
+    <span class="big">Negative weights</span>
+    <p class="use">Shortest path when edges can be negative. Detects negative cycles.</p>
+    <div class="ops"><span class="dim">O(V · E)</span></div>
+  </div>
+
+  <div class="card">
+    <div class="name">Floyd–Warshall</div>
+    <span class="big">All-pairs shortest</span>
+    <p class="use">All-pairs shortest paths on small dense graphs. Three nested loops, famously concise.</p>
+    <div class="ops"><span class="dim">O(V³)</span></div>
+  </div>
+
+</div>
+
+<!-- ===== SECTION 3: PATTERN RECOGNITION ===== -->
+
+<div class="section-head">
+  <span class="num">03</span>
+  <h2>Problem Signals</h2>
+  <span class="tag">if you see X, reach for Y</span>
+</div>
+
+<div class="signals">
+
+  <div class="signal">
+    <div class="trigger">"Top K" / "K largest"</div>
+    <div class="answer"><span class="arrow">→</span> Heap of size K</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"Seen before?" / "Count of…"</div>
+    <div class="answer"><span class="arrow">→</span> Hash map or set</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"Contiguous subarray/substring"</div>
+    <div class="answer"><span class="arrow">→</span> Sliding window</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"Sorted array, find pair…"</div>
+    <div class="answer"><span class="arrow">→</span> Two pointers</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"Shortest path" · unweighted</div>
+    <div class="answer"><span class="arrow">→</span> BFS</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"Shortest path" · weighted, non-neg</div>
+    <div class="answer"><span class="arrow">→</span> Dijkstra</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"All possible…" · small input</div>
+    <div class="answer"><span class="arrow">→</span> Backtracking</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"Min / max / count of ways"</div>
+    <div class="answer"><span class="arrow">→</span> Dynamic programming</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"Connected components" / "same group?"</div>
+    <div class="answer"><span class="arrow">→</span> Union-Find or DFS</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"Next greater / smaller element"</div>
+    <div class="answer"><span class="arrow">→</span> Monotonic stack</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"Prefix / autocomplete"</div>
+    <div class="answer"><span class="arrow">→</span> Trie</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"Smallest value that satisfies…"</div>
+    <div class="answer"><span class="arrow">→</span> Binary search on answer</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"LIFO" / undo / matched pairs</div>
+    <div class="answer"><span class="arrow">→</span> Stack</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"Scheduled / streaming / level-by-level"</div>
+    <div class="answer"><span class="arrow">→</span> Queue</div>
+  </div>
+
+  <div class="signal">
+    <div class="trigger">"Range sum/min/max" + updates</div>
+    <div class="answer"><span class="arrow">→</span> Segment / Fenwick tree</div>
+  </div>
+
+</div>
+
+<!-- ===== SECTION 4: COMPLEXITY CHEAT ===== -->
+
+<div class="section-head">
+  <span class="num">04</span>
+  <h2>Complexity at a Glance</h2>
+  <span class="tag">average case unless noted</span>
+</div>
+
+<div class="complexity-wrap">
+<table class="complexity">
+  <thead>
+    <tr>
+      <th>Structure</th>
+      <th>Access</th>
+      <th>Search</th>
+      <th>Insert</th>
+      <th>Delete</th>
+      <th>Space</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Array</td>
+      <td class="good">O(1)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Linked List</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td class="good">O(1)*</td>
+      <td class="good">O(1)*</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Hash Map</td>
+      <td>—</td>
+      <td class="good">O(1)</td>
+      <td class="good">O(1)</td>
+      <td class="good">O(1)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Tree Map (BST balanced)</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Stack / Queue</td>
+      <td>O(n)</td>
+      <td>O(n)</td>
+      <td class="good">O(1)</td>
+      <td class="good">O(1)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Heap</td>
+      <td>O(1) peek</td>
+      <td>O(n)</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(n)</td>
+    </tr>
+    <tr>
+      <td>Trie</td>
+      <td>—</td>
+      <td>O(k)</td>
+      <td>O(k)</td>
+      <td>O(k)</td>
+      <td>O(n·k)</td>
+    </tr>
+    <tr>
+      <td>Union-Find</td>
+      <td>—</td>
+      <td class="good">~O(1)</td>
+      <td class="good">~O(1)</td>
+      <td>—</td>
+      <td>O(n)</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); margin-top:10px; letter-spacing:0.05em;">
+  * O(1) for linked list insert/delete assumes you already hold a reference to the node. · k = key length.
+</p>
+
+<footer>
+  <div class="logo">— end of reference —</div>
+  <div>Print · Save · Pin to wall</div>
+</footer>
+
+</body>
+</html>
